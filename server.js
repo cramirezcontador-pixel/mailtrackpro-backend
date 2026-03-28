@@ -55,6 +55,19 @@ app.post('/check', (req, res) => {
   res.json({ results });
 });
 
+app.get('/debug/:trackingId', (req, res) => {
+  const { trackingId } = req.params;
+  const r = memoryStore[trackingId];
+  if (!r) return res.json({ error: 'No encontrado', trackingId });
+  res.json({
+    trackingId,
+    opens: r.opens,
+    lastOpenAt: r.lastOpenAt,
+    openLog: r.openLog,
+    totalEntries: r.openLog?.length || 0
+  });
+});
+
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
